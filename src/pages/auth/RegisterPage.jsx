@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../utils/network-data";
 import { ToastContainer, toast } from "react-toastify";
-import { useContext } from "react";
-import LocaleContext from "../../components/contexts/LocaleContext";
 
 import useInput from "../../components/hooks/useInput";
+import LocaleContext from "../../components/contexts/LocaleContext";
 
 function RegisterPage() {
   const [name, onNameChange] = useInput("");
@@ -16,28 +15,30 @@ function RegisterPage() {
   const navigate = useNavigate();
   const { locale } = useContext(LocaleContext);
 
-  const onSubmitHandlerEvent = (event) => {
+  const onSubmitHandlerEvent = async (event) => {
     event.preventDefault();
+
     if (password !== confirmPassword) {
       toast.error("Konfirmasi password tidak sesuai");
       return;
     }
 
-    register({ name, email, password })
-      .then((result) => {
-        if (!result.error) {
-          toast.success("Akun berhasil dibuat");
-          navigate("/login");
-        }
-      })
-      .catch(() => {
-        alert("error");
-      });
+    try {
+      const result = await register({ name, email, password });
+
+      if (!result.error) {
+        toast.success("Akun berhasil dibuat", {
+          onClose: () => navigate("/login"),
+        });
+      }
+    } catch (error) {
+      alert("error");
+    }
   };
 
   return (
     <div className="hero min-h-screen bg-base-200">
-      <ToastContainer />
+      <ToastContainer autoClose={2000} />
       <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <form className="card-body" onSubmit={onSubmitHandlerEvent}>
           <div className="form-control">
@@ -86,9 +87,21 @@ function RegisterPage() {
               required
             />
             <label className="label">
-              <a href="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </a>
+              {locale === "id" ? (
+                <>
+                  <span>Sudah Punya akun?</span>
+                  <Link to="/login" className="label-text-alt link link-hover">
+                    Login disini
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <span>Already have an account?</span>
+                  <Link to="/login" className="label-text-alt link link-hover">
+                    Login here
+                  </Link>
+                </>
+              )}
             </label>
           </div>
           <div className="form-control mt-6">
