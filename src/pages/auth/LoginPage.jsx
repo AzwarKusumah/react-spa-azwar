@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserLogged, login, putAccessToken } from "../../utils/network-data";
-import LocaleContext from "../../components/contexts/LocaleContext";
+import { ToastContainer, toast } from "react-toastify";
 
 import useInput from "../../components/hooks/useInput";
 import AuthContext from "../../components/contexts/AuthContext";
+import LocaleContext from "../../components/contexts/LocaleContext";
 
 function LoginPage() {
   const [email, onEmailChange] = useInput("");
@@ -27,7 +28,9 @@ function LoginPage() {
         const userLoggedResult = await getUserLogged();
 
         setAuth(userLoggedResult.error ? null : userLoggedResult.data);
-        navigate("/");
+        toast.success("Login berhasil", {
+          onClose: () => navigate("/"),
+        });
       }
     } catch (error) {
       alert("error");
@@ -36,6 +39,7 @@ function LoginPage() {
 
   return (
     <div className="hero min-h-screen bg-base-200">
+      <ToastContainer autoClose={1500} />
       <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <form className="card-body" onSubmit={onSubmitHandlerEvent}>
           <div className="form-control">

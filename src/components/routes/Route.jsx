@@ -7,14 +7,10 @@ import RegisterPage from "../../pages/auth/RegisterPage";
 
 const Route = () =>
   useRoutes([
-    /*     {
+    {
       path: "/",
-      element: (
-        <RouteMiddleware middleware="auth">
-          <HomePage />
-        </RouteMiddleware>
-      ),
-    }, */
+      element: <Middleware middleware="auth"></Middleware>,
+    },
     {
       path: "/login",
       element: (

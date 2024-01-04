@@ -38,7 +38,7 @@ function RegisterPage() {
 
   return (
     <div className="hero min-h-screen bg-base-200">
-      <ToastContainer autoClose={2000} />
+      <ToastContainer autoClose={1500} />
       <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <form className="card-body" onSubmit={onSubmitHandlerEvent}>
           <div className="form-control">
