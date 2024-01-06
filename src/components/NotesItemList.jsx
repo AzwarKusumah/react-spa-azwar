@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
+import { noteItemPropTypes } from "./NotesCard";
 import NotesCard from "./NotesCard";
-import PropType from "prop-types";
+import PropTypes from "prop-types";
 
 import LocaleContext from "./contexts/LocaleContext";
 
@@ -30,8 +31,8 @@ function NotesItemList({ notes }) {
   );
 }
 
-NotesItemList.propType = {
-  notes: PropType.arrayOf(PropType.object).isRequired,
+NotesItemList.propTypes = {
+  notes: PropTypes.arrayOf(PropTypes.shape(noteItemPropTypes)).isRequired,
 };
 
 export default NotesItemList;

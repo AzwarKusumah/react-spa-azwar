@@ -18,11 +18,13 @@ function NotesCard({ id, title, body, createdAt }) {
   );
 }
 
-NotesCard.propTypes = {
+export const noteItemPropTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
 };
+
+NotesCard.propTypes = noteItemPropTypes;
 
 export default NotesCard;

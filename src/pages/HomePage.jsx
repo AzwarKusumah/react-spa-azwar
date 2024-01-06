@@ -43,9 +43,4 @@ function HomePage() {
   );
 }
 
-HomePage.propTypes = {
-  onSearch: PropTypes.func.isRequired,
-  defaultKeyword: PropTypes.string.isRequired,
-};
-
 export default HomePage;
