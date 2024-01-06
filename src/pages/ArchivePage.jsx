@@ -1,51 +1,46 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getActiveNotes } from "../utils/network-data";
-import PropTypes from "prop-types";
+import { getArchivedNotes } from "../utils/network-data";
 
-import NotesItemBody from "../components/NotesItemBody";
-import NotesAdd from "../components/NotesAdd";
 import NotesSearch from "../components/NotesSearch";
-
+import NotesItemBody from "../components/NotesItemBody";
 import LocaleContext from "../components/contexts/LocaleContext";
 
-function HomePage() {
+function ArchivePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const title = searchParams.get("title");
-
   const [notes, setNotes] = useState([]);
   const [keyword, setKeyword] = useState(title || "");
   const { locale } = useContext(LocaleContext);
 
-  useEffect(() => {
-    getActiveNotes().then(({ data }) => {
-      setNotes(data);
-    });
-  }, []);
-
-  function onSearch(keyword) {
+  const changeSearchParams = (keyword) => {
     setSearchParams({ title: keyword });
+  };
+
+  const onSearchEventHandler = (keyword) => {
     setKeyword(keyword);
-  }
+    changeSearchParams(keyword);
+  };
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(keyword.toLowerCase())
   );
+
+  useEffect(() => {
+    getArchivedNotes().then(({ data }) => {
+      setNotes(data);
+    });
+  }, []);
+
   return (
     <>
       <h2 className="text-2xl font-bold mb-8 text-center">
-        {locale === "id" ? "Catatan Aktif" : "Active Notes"}
+        {locale === "id" ? "Catatan Arsip" : "Archive Notes"}
       </h2>
-      <NotesSearch onSearch={onSearch} />
+      <NotesSearch onSearch={onSearchEventHandler} />
       <NotesItemBody notes={filteredNotes} />
-      <NotesAdd />
     </>
   );
 }
 
-HomePage.propTypes = {
-  onSearch: PropTypes.func.isRequired,
-  defaultKeyword: PropTypes.string.isRequired,
-};
-
-export default HomePage;
+export default ArchivePage;

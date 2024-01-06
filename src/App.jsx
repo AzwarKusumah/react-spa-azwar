@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Route from "./components/routes/Route";
+import NotesLoading from "./components/NotesLoading";
 import Navigation from "./components/navigation/Navigation";
+import { getUserLogged } from "./utils/network-data";
 
 import AuthContext from "./components/contexts/AuthContext";
 import { LocaleProvider } from "./components/contexts/LocaleContext";
@@ -12,6 +14,7 @@ function App() {
   const [theme, setTheme] = useState(
     localStorage.getItem("data-theme") || "luxury"
   );
+  const [loading, setLoading] = useState(true);
 
   const toggleLocale = () => {
     setLocale((prevLocale) => {
@@ -55,13 +58,34 @@ function App() {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    const fetchUserLogged = async () => {
+      try {
+        const res = await getUserLogged();
+        if (!res.error) {
+          setAuth(res.data);
+        } else {
+          setAuth(null);
+          setErrorMessage("Failed to fetch user data");
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setErrorMessage("An unexpected error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserLogged();
+  }, []);
+
   return (
     <div>
       <ThemeProvider value={themeContextValue}>
         <LocaleProvider value={localeContextValue}>
           <AuthContext.Provider value={authContextValue}>
             <Navigation />
-            <Route />
+            {loading ? <NotesLoading /> : <Route />}
           </AuthContext.Provider>
         </LocaleProvider>
       </ThemeProvider>

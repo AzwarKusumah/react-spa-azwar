@@ -16,7 +16,7 @@ function LogoutButton() {
     <>
       {auth ? (
         <button
-          className="btn"
+          className="btn btn-square btn-ghost"
           onClick={() => document.getElementById("lgt_btn").showModal()}
         >
           <MdLogout className="w-8 h-8" />
