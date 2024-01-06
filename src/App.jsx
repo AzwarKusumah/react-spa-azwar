@@ -66,11 +66,9 @@ function App() {
           setAuth(res.data);
         } else {
           setAuth(null);
-          setErrorMessage("Failed to fetch user data");
         }
       } catch (error) {
         console.error("Error fetching user:", error);
-        setErrorMessage("An unexpected error occurred");
       } finally {
         setLoading(false);
       }

@@ -12,9 +12,7 @@ function NotesCard({ id, title, body, createdAt }) {
           <Link to={`/notes/${id}`}>{title}</Link>
         </h2>
         <span className="text-sm">{showFormattedDate(createdAt)}</span>
-        <div>
-          <p>{parser(body)}</p>
-        </div>
+        <div>{parser(body)}</div>
       </div>
     </div>
   );
